@@ -23,10 +23,10 @@ app.use('/api', userRoutes, authRoutes);
 app.use(express.static('public'));
 
 if (['production', 'ci'].includes(process.env.NODE_ENV as string)) {
-    app.use(express.static('client/build'));
+    app.use(express.static('../client/build'));
 
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve('client', 'build', 'index.html'));
+        res.sendFile(path.resolve('..', 'client', 'build', 'index.html'));
     });
 }
 
