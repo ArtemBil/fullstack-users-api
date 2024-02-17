@@ -23,10 +23,12 @@ app.use('/api', userRoutes, authRoutes);
 app.use(express.static('public'));
 
 if (['production', 'ci'].includes(process.env.NODE_ENV as string)) {
-    app.use(express.static('../client/build'));
+    const frontendPath = path.resolve(__dirname, '..', 'client', 'build');
+    app.use(express.static(frontendPath));
 
+    console.log(path.resolve('..', 'client', 'build', 'index.html'));
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve('..', 'client', 'build', 'index.html'));
+        res.sendFile(path.join(frontendPath, 'index.html'));
     });
 }
 
