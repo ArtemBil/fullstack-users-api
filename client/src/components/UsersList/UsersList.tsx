@@ -32,7 +32,7 @@ const UsersList: React.FC = () => {
     }
 
     if (loading) {
-        return <CircularProgress size="25px" sx={{color: 'grey', my: 3}}/>;
+        return <CircularProgress size="25px" sx={{color: 'grey', mt: 14}}/>;
     }
 
     return <>

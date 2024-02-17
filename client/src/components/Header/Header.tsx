@@ -62,7 +62,7 @@ export default function NavHeader() {
                     <Typography
                         variant="h6"
                         component="div"
-                        sx={{ display: { xs: 'none', sm: 'block' } }}
+                        sx={{ display: { xs: 'none', sm: 'block' }, color: 'white'}}
                     >
                         <Link to="/">Hello world!</Link>
                     </Typography>
