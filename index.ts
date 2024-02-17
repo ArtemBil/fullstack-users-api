@@ -24,7 +24,7 @@ app.use(express.static('public'));
 
 console.log('process.env.NODE_ENV ->>>', process.env.NODE_ENV);
 if (['production', 'ci'].includes(process.env.NODE_ENV as string)) {
-    const frontendPath = path.resolve(__dirname, 'client', 'build');
+    const frontendPath = path.resolve(__dirname, '..', 'client', 'build');
     app.use(express.static(frontendPath));
 
     app.get('*', (req, res) => {

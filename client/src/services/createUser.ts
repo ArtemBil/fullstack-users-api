@@ -12,11 +12,11 @@ export default async function createUser(userData: UserCreateData) {
         }
     }
 
-    console.log('TEST')
     const { data } = await apiInstance.post<UserCreateResponse>('/api/users', userData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },
     });
+
     return data;
 }
