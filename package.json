@@ -6,8 +6,8 @@
   "scripts": {
     "start:dev": "npx nodemon",
     "start": "tsc index.ts",
-    "client": "npm run start --prefix ../client",
-    "build": "npx prisma migrate deploy && npx prisma generate && npx prisma db seed && npm install --prefix ../client && npm run build --prefix ../client",
+    "client": "npm run start --prefix client",
+    "build": "npx prisma migrate deploy && npx prisma generate && npx prisma db seed && npm install --prefix client && npm run build --prefix client",
     "postinstall": "npx prisma generate"
   },
   "prisma": {
