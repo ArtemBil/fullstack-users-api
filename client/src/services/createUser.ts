@@ -1,7 +1,9 @@
 import apiInstance from './axios-instance';
 import {UserCreateData, UserCreateResponse} from '../types/user-types';
+import {useNavigate} from 'react-router';
 
 export default async function createUser(userData: UserCreateData) {
+    const router = useNavigate();
     const formData = new FormData();
 
     for (const [field, value] of Object.entries(userData)) {
@@ -12,11 +14,13 @@ export default async function createUser(userData: UserCreateData) {
         }
     }
 
-    console.log('TEST')
     const { data } = await apiInstance.post<UserCreateResponse>('/api/users', userData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },
     });
-    return data;
+
+    if (data.success) {
+        return router('/');
+    }
 }

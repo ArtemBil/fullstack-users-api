@@ -64,7 +64,7 @@ export default function NavHeader() {
                         component="div"
                         sx={{ display: { xs: 'none', sm: 'block' } }}
                     >
-                        Hello world!
+                        <Link to="/">Hello world!</Link>
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'flex' }, ml: 'auto', gap: '10px'}}>
                         <Button variant="contained" sx={{background: 'white'}}><Link to="/">Users</Link></Button>

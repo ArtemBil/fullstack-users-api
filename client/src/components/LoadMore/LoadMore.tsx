@@ -2,6 +2,8 @@ import React, {Dispatch, SetStateAction, useEffect, useState} from 'react';
 import Button from '@mui/material/Button';
 import getUsersList from '../../services/getUsersList';
 import {UsersDataObject} from '../../types/user-types';
+import Box from '@mui/material/Box';
+import {CircularProgress} from '@mui/material';
 
 interface Props {
     page: number;
@@ -40,7 +42,7 @@ const LoadMore: React.FC<Props> = ({setPage, page, setUsers}) => {
         })()
     }, [page, setUsers, prevPage]);
 
-    return loading ? <div>Loading... </div> : (
+    return loading ? <CircularProgress size="25px" sx={{color: 'grey', my: 3}}/> : (
         <Button onClick={handleClick} variant="contained" sx={{mt: 3, mb: 3}}>
             Load More
         </Button>)

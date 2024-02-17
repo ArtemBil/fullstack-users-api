@@ -1,5 +1,8 @@
 import sharp from 'sharp';
 import tinify from 'tinify';
+import {UploadApiErrorResponse, UploadApiResponse, v2 as cloudinary } from 'cloudinary';
+import {Readable} from 'stream';
+import {randomUUID} from 'crypto';
 
 
 export default class ImageProcessor {
@@ -37,5 +40,23 @@ export default class ImageProcessor {
      */
     public async saveAsFile(buffer: Buffer | Uint8Array, path: string) {
         return await sharp(buffer).jpeg().toFile(path);
+    }
+
+    /**
+     * Upload to cloudinary the image
+     *
+     * @param buffer
+     * @param options
+     */
+    uploadToCloudinaryStream(buffer: Buffer | Uint8Array, options = {}): Promise<UploadApiErrorResponse | UploadApiResponse | undefined> {
+        return new Promise((resolve, reject) => {
+            const TransformStream = cloudinary.uploader.upload_stream(options, (error, result) => {
+               if (error) reject(error);
+               resolve(result);
+            });
+
+            let stream = Readable.from(buffer);
+            stream.pipe(TransformStream);
+        });
     }
 }

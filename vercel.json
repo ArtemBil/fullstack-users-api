@@ -1,11 +1,17 @@
 {
   "version": 2,
   "builds": [
-    { "src": "server/index.ts", "use": "@now/node-server" }
+    {
+      "src": "index.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "client/build/**",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/api/(.*)", "dest": "server/index.ts" },
-    { "src": "/(.*)", "dest": "client/build/index.html" }
-  ]
+    { "src": "/(.*)", "dest": "/" }
+  ],
+  "outputDirectory": "client/build"
 }
