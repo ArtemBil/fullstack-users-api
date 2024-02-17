@@ -41,7 +41,7 @@ export type UserCreateData = {
 export type UserCreateResponse = {
     success: boolean,
     message: string;
-    fails?: {
+    errors?: {
         [field: string]: string[]
     }
 }

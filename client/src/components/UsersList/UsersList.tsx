@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import {Card, CardContent, CardHeader, CardMedia} from '@mui/material';
+import {Card, CardContent, CardHeader, CardMedia, CircularProgress} from '@mui/material';
 import LoadMore from '../LoadMore';
 import getUsersList from '../../services/getUsersList';
 import {UsersDataObject} from '../../types/user-types';
@@ -11,12 +11,14 @@ const UsersList: React.FC = () => {
     const [usersData, setUsersData] = useState<UsersDataObject>();
     const [numOfPages, setNumOfPages] = useState(0);
     const [showLoadMoreButton, setShowLoadMoreButton] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
             const users = await getUsersList();
             setUsersData(users);
             setNumOfPages(users.total_pages);
+            setLoading(false);
         })()
     }, []);
 
@@ -27,6 +29,10 @@ const UsersList: React.FC = () => {
 
     if (!usersData?.users.length) {
         return null;
+    }
+
+    if (loading) {
+        return <CircularProgress size="25px" sx={{color: 'grey', my: 3}}/>;
     }
 
     return <>
