@@ -6,7 +6,7 @@ export default class ValidatePhone implements IValidationRule {
     /**
      * Regexp for UA phone number pattern
      */
-    UA_PHONE_PATTERN_REGEXP = /^\+?3?8?(0\d{9})$/;
+    UA_PHONE_PATTERN_REGEXP = /^\+?380([0-9]{9})$/;
 
     /**
      * @inheritDoc
