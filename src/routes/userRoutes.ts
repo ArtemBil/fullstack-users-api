@@ -4,7 +4,6 @@ import ImageProcessor from '../utils/image-processor';
 import prisma from '../services/prisma';
 import requireUserIdParam from '../middleware/requireUserId';
 import {ValidatorService} from '../validators/validator-service';
-import path from 'path';
 import {randomUUID} from 'crypto';
 import {getNextLinkQuery, getPrevLinkQuery, getUrlWithoutMetadata} from '../utils/utils';
 import {UsersCreateQuery} from '../types/user-types';
@@ -111,16 +110,20 @@ router.post('/users', requireToken, async (req: Request, res: Response) => {
         const imageProcessor = new ImageProcessor(req.file as Express.Multer.File);
         const resizedImage = await imageProcessor.resize(70, 70);
         const optimizedImage = await imageProcessor.optimizeByBuffer(resizedImage);
-        const imageId = randomUUID();
-        const imagesPath = path.join(__dirname, `../../../public/images/users/${imageId}.jpeg`);
-        await imageProcessor.saveAsFile(optimizedImage, imagesPath);
 
         try {
+            const uploadResult = await imageProcessor.uploadToCloudinaryStream(optimizedImage, {
+                folder: 'users'
+            });
+
+            const placeholder = 'https://res.cloudinary.com/demo/image/upload/d_avatar.png/non_existing_id.png';
+            const photoUrl = uploadResult ? `${process.env.BASE_URL}/images/${uploadResult.public_id}.jpeg` : placeholder;
+
             await prisma.user.create({
                 data: {
                     name: req.body.name,
                     phone: req.body.phone,
-                    photo: `${process.env.BASE_URL}/images/users/${imageId}.jpeg`,
+                    photo: photoUrl,
                     position: (positions as {id: number, name: string}).name as string,
                     position_id: +req.body.position_id,
                     email: req.body.email

@@ -152,7 +152,7 @@ const UserCreateForm = () => {
                                 <Grid item xs={12}>
                                     <FormControl fullWidth error={!!errors?.phone?.length}>
                                         <TextField
-                                            type="number"
+                                            type="tel"
                                             placeholder="Enter phone number"
                                             label="Phone"
                                             variant="outlined"

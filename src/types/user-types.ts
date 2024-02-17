@@ -2,7 +2,7 @@ export interface User {
     id: number;
     name: string;
     phone: string;
-    photo: string;
+    photo: Express.Multer.File;
     email: number;
     position: string;
     position_id: number;
