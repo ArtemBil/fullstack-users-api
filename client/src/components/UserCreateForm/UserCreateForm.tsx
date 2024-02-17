@@ -23,6 +23,7 @@ import {
 import {CloudUpload} from '@mui/icons-material';
 import getPositions from '../../services/getPositions';
 import Box from '@mui/material/Box';
+import {useNavigate} from 'react-router';
 
 
 const VisuallyHiddenInput = styled('input')({
@@ -43,6 +44,7 @@ const UserCreateForm = () => {
     const [positions, setPositions] = useState<PositionsDataObject>();
     const [loading, setLoading] = useState(false);
     const [photoName, setPhotoName] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         (async () => {
@@ -72,7 +74,11 @@ const UserCreateForm = () => {
         try {
             setLoading(true);
             setErrors({});
-            await createUser(userData);
+            const response = await createUser(userData);
+
+            if (response.success) {
+                return navigate('/');
+            }
         } catch (e) {
             if (e instanceof AxiosError && e.response) {
                 setErrors(e.response.data.errors);
