@@ -17,8 +17,6 @@ declare module 'http' {
     }
 }
 
-
-
 const router = Router();
 
 router.get('/users/:id', requireUserIdParam, async (req: Request, res: Response) => {
@@ -42,10 +40,6 @@ router.get('/positions', async (req: Request, res: Response) => {
         positions
     });
 });
-
-
-
-
 
 router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Response) => {
     const currentPage = +req.query.page;
@@ -83,7 +77,7 @@ router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Res
             total_pages: total_pages,
             total_users: usersCount,
             count: limit,
-            ...(offset && currentPage ? {offset: +offset} : {page: currentPage}),
+            ...(offset && currentPage ? {offset: +offset} : {page: currentPage || 1}),
             links: {
                 next_url: total_pages === currentPage ? null : getNextLinkQuery(linksUrl, {page: currentPage, offset, count: limit}),
                 prev_url: getPrevLinkQuery(linksUrl, {page: currentPage, offset, count: limit}),
@@ -118,7 +112,7 @@ router.post('/users', requireToken, async (req: Request, res: Response) => {
         const resizedImage = await imageProcessor.resize(70, 70);
         const optimizedImage = await imageProcessor.optimizeByBuffer(resizedImage);
         const imageId = randomUUID();
-        const imagesPath = path.join(__dirname, `../../public/images/users/${imageId}.jpeg`);
+        const imagesPath = path.join(__dirname, `../../../public/images/users/${imageId}.jpeg`);
         await imageProcessor.saveAsFile(optimizedImage, imagesPath);
 
         try {
