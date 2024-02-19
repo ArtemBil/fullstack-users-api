@@ -4,8 +4,7 @@ import ImageProcessor from '../../utils/image-processor';
 import prisma from '../../services/prisma';
 import requireUserIdParam from '../../middleware/requireUserId';
 import {ValidatorService} from '../../validators/validator-service';
-import {randomUUID} from 'crypto';
-import {getNextLinkQuery, getPrevLinkQuery, getUrlWithoutMetadata} from '../../utils/utils';
+import {getNextLinkQuery, getPrevLinkQuery, getUrlWithoutMetadata, isInteger} from '../../utils/utils';
 import {UsersCreateQuery} from '../../types/user-types';
 
 
@@ -41,9 +40,11 @@ router.get('/positions', async (req: Request, res: Response) => {
 });
 
 router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Response) => {
-    const currentPage = +req.query.page;
+    const page = req.query.page;
+    const offset = req.query.offset;
+    const count = req.query.count;
 
-    if (currentPage < 1) {
+    if (page && +page < 1) {
         return res.send({
             success: false,
             message: 'Validation failed',
@@ -53,8 +54,38 @@ router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Res
         })
     }
 
-    const offset = req.query.offset;
-    const limit = +req.query.count || 6;
+    if (page && !isInteger(Number(page))) {
+        return res.send({
+            success: false,
+            message: 'Validation failed',
+            errors: {
+                page: ['The page must be an integer.']
+            }
+        })
+    }
+
+    if (offset && !isInteger(Number(offset))) {
+        return res.send({
+            success: false,
+            message: 'Validation failed',
+            errors: {
+                page: ['The offset must be an integer.']
+            }
+        })
+    }
+
+    if (count && !isInteger(Number(count))) {
+        return res.send({
+            success: false,
+            message: 'Validation failed',
+            errors: {
+                page: ['The count must be an integer.']
+            }
+        })
+    }
+
+    const currentPage = (page && +page) || 1;
+    const limit = Number(count) || 6;
     const step = ((currentPage || 1) * limit) - limit;
 
     try {
@@ -65,7 +96,7 @@ router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Res
             take: limit
         });
 
-        if (offset && offset > usersCount || currentPage > total_pages) {
+        if (offset && +offset > usersCount || currentPage > total_pages) {
             return res.send({success: false, message: 'Not found'});
         }
 
@@ -78,8 +109,8 @@ router.get('/users', async (req: Request<{}, {}, {}, UsersCreateQuery>, res: Res
             count: limit,
             ...(offset && currentPage ? {offset: +offset} : {page: currentPage || 1}),
             links: {
-                next_url: total_pages === currentPage ? null : getNextLinkQuery(linksUrl, {page: currentPage, offset, count: limit}),
-                prev_url: getPrevLinkQuery(linksUrl, {page: currentPage, offset, count: limit}),
+                next_url: total_pages === currentPage ? null : getNextLinkQuery(linksUrl, {page: currentPage || 1, offset: Number(offset), count: limit}),
+                prev_url: getPrevLinkQuery(linksUrl, {page: currentPage, offset: Number(offset), count: limit}),
             },
             users
         });
