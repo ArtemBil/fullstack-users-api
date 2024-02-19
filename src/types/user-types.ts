@@ -1,3 +1,4 @@
+import {Request} from 'express';
 export interface User {
     id: number;
     name: string;
@@ -17,7 +18,17 @@ export interface UserResponse {
 }
 
 export interface UsersCreateQuery {
+    page?: string;
+    offset?: string;
+    count?: string;
+}
+
+export interface UsersNavigationLinks {
     page: number;
     offset?: number;
     count: number;
 }
+
+export type RequestWithQuery = Request<{}, {}, {}, UsersCreateQuery>;
+
+export type QueryFieldTypes = 'page' | 'offset' | 'count';
