@@ -1,4 +1,4 @@
-import {UsersCreateQuery} from '../types/user-types';
+import {UsersCreateQuery, UsersNavigationLinks} from '../types/user-types';
 import {Request} from 'express';
 
 /**
@@ -17,7 +17,7 @@ export const getUrlWithoutMetadata =  (req: Request<{}, {}, {}, UsersCreateQuery
  * @param url
  * @param query
  */
-export function getNextLinkQuery(url: string, query: UsersCreateQuery): string {
+export function getNextLinkQuery(url: string, query: UsersNavigationLinks): string {
     if (query.offset) {
         return `${url}?offset=${+query.offset + query.count}&count=${query.count}`;
     }
@@ -31,7 +31,7 @@ export function getNextLinkQuery(url: string, query: UsersCreateQuery): string {
  * @param url
  * @param query
  */
-export function getPrevLinkQuery(url: string, query: UsersCreateQuery) {
+export function getPrevLinkQuery(url: string, query: UsersNavigationLinks) {
     if (query.offset && query.count && query.offset - query.count) {
         return null;
     }
@@ -45,4 +45,13 @@ export function getPrevLinkQuery(url: string, query: UsersCreateQuery) {
     }
 
     return `${url}?page=${query.page - 1}&count=${query.count}`;
+}
+
+/**
+ * Validate if param is integer
+ *
+ * @param param
+ */
+export const isInteger = (param: any) => {
+    return Number(param) === param && param % 1 === 0;
 }
