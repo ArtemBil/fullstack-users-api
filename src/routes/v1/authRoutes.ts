@@ -1,5 +1,5 @@
 import {Request, Response, Router} from 'express';
-import generateWebToken from '../utils/generateToken';
+import generateWebToken from '../../utils/generateToken';
 
 const router = Router();
 

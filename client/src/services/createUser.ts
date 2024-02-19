@@ -13,7 +13,7 @@ export default async function createUser(userData: UserCreateData) {
         }
     }
 
-    const { data } = await apiInstance.post<UserCreateResponse>('/api/users', userData, {
+    const { data } = await apiInstance.post<UserCreateResponse>('/api/v1/users', userData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         },

@@ -1,13 +1,12 @@
-import express, {Request, Response} from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
 import bodyParser from 'body-parser';
-import userRoutes from './src/routes/userRoutes';
-import authRoutes from './src/routes/authRoutes';
+import userRoutes from './src/routes/v1/userRoutes';
+import authRoutes from './src/routes/v1/authRoutes';
 import multer from 'multer';
 import tinify from 'tinify';
 import {v2 as cloudinaryApi} from 'cloudinary';
-import {pipeline} from 'stream/promises';
 import imageRoutes from './src/routes/imageRoutes';
 
 dotenv.config();
@@ -29,7 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(upload.single('photo'));
 
-app.use('/api', userRoutes, authRoutes);
+app.use('/api/v1', userRoutes, authRoutes);
 app.use('/', imageRoutes);
 
 if (['production'].includes(process.env.NODE_ENV as string)) {

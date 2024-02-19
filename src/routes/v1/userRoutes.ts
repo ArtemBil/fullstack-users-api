@@ -1,12 +1,12 @@
 import {Request, Response, Router} from 'express';
-import requireToken from '../middleware/requireToken';
-import ImageProcessor from '../utils/image-processor';
-import prisma from '../services/prisma';
-import requireUserIdParam from '../middleware/requireUserId';
-import {ValidatorService} from '../validators/validator-service';
+import requireToken from '../../middleware/requireToken';
+import ImageProcessor from '../../utils/image-processor';
+import prisma from '../../services/prisma';
+import requireUserIdParam from '../../middleware/requireUserId';
+import {ValidatorService} from '../../validators/validator-service';
 import {randomUUID} from 'crypto';
-import {getNextLinkQuery, getPrevLinkQuery, getUrlWithoutMetadata} from '../utils/utils';
-import {UsersCreateQuery} from '../types/user-types';
+import {getNextLinkQuery, getPrevLinkQuery, getUrlWithoutMetadata} from '../../utils/utils';
+import {UsersCreateQuery} from '../../types/user-types';
 
 
 /** TODO: Not sure where it should be stored */
